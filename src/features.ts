@@ -353,11 +353,6 @@ export async function search_school(schoolName: String): Promise<SchoolSearch> {
     SchoolNode_data.push(school_node_instance);
   }
 
-  // print out the keys
-  // college_to_department_map.forEach((value, key) => {
-  //   console.log(key);
-  //   console.log(value);
-  // });
   const return_data: SchoolSearch = {
     school_node: SchoolNode_data,
     department_map: college_to_department_map,
@@ -366,8 +361,6 @@ export async function search_school(schoolName: String): Promise<SchoolSearch> {
   return return_data;
 }
 
-// this function will filter based on the raw school data and the original name of the school
-// this function should return a filtered version of the SchoolSearch object
 export async function filter_school(
   raw_school_data: SchoolSearch,
   original_school_name: string
