@@ -20,7 +20,7 @@ export interface TeacherNode {
 }
 
 const API_LINK: String = "https://www.ratemyprofessors.com/graphql";
-const TEACHER_COMMENTS : String = `\query TeacherRatingsPageQuery($id: ID!) {
+const TEACHER_COMMENTS: String = `\"query TeacherRatingsPageQuery($id: ID!) {
         node(id: $id) {
             __typename
             ... on Teacher {
@@ -43,7 +43,7 @@ const TEACHER_COMMENTS : String = `\query TeacherRatingsPageQuery($id: ID!) {
                 }
             }
         }
-    }\`
+    }"`;
 
 // use this as playground for testing
 export async function test_interface() {
