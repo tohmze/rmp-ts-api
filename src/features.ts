@@ -19,6 +19,32 @@ export interface TeacherNode {
   would_take_again_percent: number;
 }
 
+const API_LINK: String = "https://www.ratemyprofessors.com/graphql";
+const TEACHER_COMMENTS : String = `\query TeacherRatingsPageQuery($id: ID!) {
+        node(id: $id) {
+            __typename
+            ... on Teacher {
+                firstName
+                lastName
+                department
+                ratings(first: 1000) {
+                    edges {
+                        node {
+                            comment
+                            class
+                            date
+                            helpfulRating
+                            difficultyRating
+                            grade
+                            wouldTakeAgain
+                            ratingTags
+                        }
+                    }
+                }
+            }
+        }
+    }\`
+
 // use this as playground for testing
 export async function test_interface() {
   const school_instance = {
