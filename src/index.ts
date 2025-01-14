@@ -2,6 +2,7 @@
 import { test_interface } from "./features";
 import { search_school } from "./features";
 import { filter_school } from "./features";
+import * as fs from "fs";
 (async function main() {
   // await test_interface();
   const search_school_data = await search_school("City College of New York");
@@ -20,8 +21,9 @@ import { filter_school } from "./features";
     "Douglas Troeger"
   );
 
-  console.log(rmp_instance);
-  console.log(rmp_instance2);
+  await rmp_instance.get_college_info_and_save("random_json.json", true);
+  // console.log(filtered_data_class.department_map);
+  // console.log(filtered_data_class.school_node);
 })();
 
 // this is the main class
@@ -38,6 +40,36 @@ class RateMyProfessor {
       // otherwise, implement the constructor to update only the college name
     } else {
       this.collegeName = college_name;
+    }
+  }
+
+  // get college summary
+  public async get_college_info(retrieve_all: boolean) {
+    if (retrieve_all) {
+      return await search_school(this.collegeName);
+    } else {
+      return await filter_school(
+        await search_school(this.collegeName),
+        this.collegeName
+      );
+    }
+  }
+
+  public async get_college_info_and_save(
+    file_name: string,
+    retrieve_all: boolean
+  ) {
+    if (retrieve_all) {
+      fs.writeFile(
+        file_name,
+        JSON.stringify(await this.get_college_info(retrieve_all)),
+        (err) => {
+          if (err) {
+            console.error(`Error with saving data : ${err}`);
+          }
+          console.log("File created and saved data successfully!");
+        }
+      );
     }
   }
 }
