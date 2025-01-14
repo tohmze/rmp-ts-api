@@ -1,5 +1,5 @@
 // Stores primary Classes and methods
-import { test_interface } from "./features";
+import { SchoolSearch, test_interface } from "./features";
 import { search_school } from "./features";
 import { filter_school } from "./features";
 import * as fs from "fs";
@@ -21,9 +21,12 @@ import * as fs from "fs";
     "Douglas Troeger"
   );
 
-  await rmp_instance.get_college_info_and_save("random_json.json", true);
-  // console.log(filtered_data_class.department_map);
-  // console.log(filtered_data_class.school_node);
+  let filtered_data_class = await rmp_instance.get_college_info_and_save(
+    "random_json.json",
+    true
+  );
+  console.log(filtered_data_class.department_map);
+  console.log(filtered_data_class.school_node);
 })();
 
 // this is the main class
@@ -44,7 +47,7 @@ class RateMyProfessor {
   }
 
   // get college summary
-  public async get_college_info(retrieve_all: boolean) {
+  public async get_college_info(retrieve_all: boolean): Promise<SchoolSearch> {
     if (retrieve_all) {
       return await search_school(this.collegeName);
     } else {
@@ -58,18 +61,17 @@ class RateMyProfessor {
   public async get_college_info_and_save(
     file_name: string,
     retrieve_all: boolean
-  ) {
+  ): Promise<SchoolSearch> {
+    let retrieved_data = await this.get_college_info(retrieve_all);
     if (retrieve_all) {
-      fs.writeFile(
-        file_name,
-        JSON.stringify(await this.get_college_info(retrieve_all)),
-        (err) => {
-          if (err) {
-            console.error(`Error with saving data : ${err}`);
-          }
-          console.log("File created and saved data successfully!");
+      fs.writeFile(file_name, JSON.stringify(retrieved_data), (err) => {
+        if (err) {
+          console.error(`Error with saving data : ${err}`);
         }
-      );
+        console.log("File created and saved data successfully!");
+      });
     }
+
+    return retrieved_data;
   }
 }
