@@ -10,6 +10,16 @@ import {
 } from "./features";
 import * as fs from "fs";
 
+export {
+  search_school,
+  retrieve_school_id,
+  filter_school,
+  SchoolSearch,
+  search_teacher,
+  get_professor_rating,
+  get_professor_list_by_school,
+} from "./features";
+
 // (async function main() {
 //   // await test_interface();
 //   const search_school_data = await search_school("City College of New York");
