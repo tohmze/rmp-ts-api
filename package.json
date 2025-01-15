@@ -1,6 +1,6 @@
 {
   "name": "rate-my-professor-api-ts",
-  "version": "0.0.212",
+  "version": "0.0.213",
   "main": "dist/index.js",
   "license": "MIT",
   "type": "module",
