@@ -39,12 +39,12 @@ import * as fs from "fs";
     "Hamed Fazli",
     "City Collge of New York"
   );
-  const professor_rating_list = await get_professor_rating(
+  const professor_ratings = await get_professor_rating(
     "Douglas Troeger",
     "City College of New York"
   );
-  // console.log(filtered_data_class.department_map);
-  // console.log(filtered_data_class.school_node);
+
+  console.log(professor_ratings);
 })();
 
 // this is the main class
