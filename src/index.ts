@@ -164,4 +164,26 @@ export class RateMyProfessor {
 
     return professor_comments;
   }
+
+  public async get_professor_info() {
+    if (!this.teacherName) {
+      console.error(
+        "Name of professor is empty, please add professor name before continuing!"
+      );
+    } else {
+      return await search_teacher(this.teacherName, this.collegeName);
+    }
+  }
+
+  public async get_professor_info_and_save(file_name: string) {
+    const professor_info = await this.get_professor_info();
+    fs.writeFile(file_name, JSON.stringify(professor_info), (err) => {
+      if (err) {
+        console.error("There was an error saving the data", err);
+      } else {
+        console.log("Successfully saved data to file!");
+      }
+    });
+    return professor_info;
+  }
 }
