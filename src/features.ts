@@ -1,108 +1,121 @@
-// const axios = require("axios").default;
-export interface School {
-  id: String;
-  name: String;
-}
+// // const axios = require("axios").default;
+// interface School {
+//   id: String;
+//   name: String;
+// }
 
-export interface TeacherNode {
-  _typename?: String; // unused
-  avg_difficulty: number;
-  avg_rating: number;
-  department: String;
-  first_name: String;
-  last_name: String;
-  legacy_id: number;
-  id: String;
-  is_saved: boolean;
-  num_ratings: number;
-  // TODO : test this
-  school: School;
-  would_take_again_percent: number;
-}
+// interface TeacherNode {
+//   _typename?: String; // unused
+//   avg_difficulty: number;
+//   avg_rating: number;
+//   department: String;
+//   first_name: String;
+//   last_name: String;
+//   legacy_id: number;
+//   id: String;
+//   is_saved: boolean;
+//   num_ratings: number;
+//   // TODO : test this
+//   school: School;
+//   would_take_again_percent: number;
+// }
 
-export interface TeacherSearch {
-  cursor: String;
-  node: TeacherNode;
-}
+// interface TeacherSearch {
+//   cursor: String;
+//   node: TeacherNode;
+// }
 
-export interface ProfessorRating {
-  avg_rating: number;
-  avg_difficulty: number;
-  would_take_again_percent: number;
-  num_ratings: number;
-  formatted_name: String;
-  department: String;
-  college_name: String;
-  link: String;
-}
+// interface ProfessorRating {
+//   avg_rating: number;
+//   avg_difficulty: number;
+//   would_take_again_percent: number;
+//   num_ratings: number;
+//   formatted_name: String;
+//   department: String;
+//   college_name: String;
+//   link: String;
+// }
 
-export interface Department {
-  id: String;
-  name: String;
-}
+// interface Department {
+//   id: String;
+//   name: String;
+// }
 
-export interface SchoolSummary {
-  campus_condition?: number;
-  campus_location?: number;
-  career_opportunities: number;
-  club_and_event_activities?: number;
-  food_quality?: number;
-  internet_speed?: number;
-  library_condition?: number;
-  school_reputation?: number;
-  school_safety?: number;
-  school_satisfaction?: number;
-  social_activities?: number;
-}
+// interface SchoolSummary {
+//   campus_condition?: number;
+//   campus_location?: number;
+//   career_opportunities: number;
+//   club_and_event_activities?: number;
+//   food_quality?: number;
+//   internet_speed?: number;
+//   library_condition?: number;
+//   school_reputation?: number;
+//   school_safety?: number;
+//   school_satisfaction?: number;
+//   social_activities?: number;
+// }
 
-// NOTE : this is what the data should be broken down into
-export interface SchoolNode {
-  avg_rating_rounded: number;
-  city: String;
-  // departments: Department[]; // array of interface
-  id: String;
-  legacy_id: number;
-  name: String;
-  num_ratings: number;
-  state: String;
-  summary: SchoolSummary;
-}
+// // NOTE : this is what the data should be broken down into
+// interface SchoolNode {
+//   avg_rating_rounded: number;
+//   city: String;
+//   // departments: Department[]; // array of interface
+//   id: String;
+//   legacy_id: number;
+//   name: String;
+//   num_ratings: number;
+//   state: String;
+//   summary: SchoolSummary;
+// }
 
-export interface SchoolSearch {
-  school_node: SchoolNode[];
-  department_map: Map<string, Department[]>;
-}
+// interface SchoolSearch {
+//   school_node: SchoolNode[];
+//   department_map: Map<string, Department[]>;
+// }
 
-// return type for retrieving teacher ratings
-export interface TeacherRatings {
-  class: String;
-  date_posted: String;
-  comment: String;
-  difficulty_rating: number;
-  teacher_id: String;
-  clarity_rating: number;
-  student_grade: String;
-  is_for_credit: boolean;
-  attendance_status: String;
-  is_online: boolean;
-  comment_likes: number;
-  comment_dislikes: number;
-  rating_tags: String;
-  textbook_use: number;
+// // return type for retrieving teacher ratings
+// interface TeacherRatings {
+//   class: String;
+//   date_posted: String;
+//   comment: String;
+//   difficulty_rating: number;
+//   teacher_id: String;
+//   clarity_rating: number;
+//   student_grade: String;
+//   is_for_credit: boolean;
+//   attendance_status: String;
+//   is_online: boolean;
+//   comment_likes: number;
+//   comment_dislikes: number;
+//   rating_tags: String;
+//   textbook_use: number;
 
-  // NOTE : would_take_again if 0 return false, otherwise, return true
-  // would_take_again == 0? return false : return true;
-  would_take_again: boolean;
-}
+//   // NOTE : would_take_again if 0 return false, otherwise, return true
+//   // would_take_again == 0? return false : return true;
+//   would_take_again: boolean;
+// }
 
-export interface TeacherList {
-  avg_difficulty: number; // float
-  avg_rating: number;
-  department: String;
-  name: String; // string concanctenate first and last name
-  num_ratings: number; // int
-  would_take_again_percent: number; // float
-}
+// interface TeacherList {
+//   avg_difficulty: number; // float
+//   avg_rating: number;
+//   department: String;
+//   name: String; // string concanctenate first and last name
+//   num_ratings: number; // int
+//   would_take_again_percent: number; // float
+// }
+
+import {
+  School,
+  TeacherNode,
+  TeacherSearch,
+  ProfessorRating,
+  Department,
+  SchoolSummary,
+  SchoolNode,
+  SchoolSearch,
+  TeacherRatings,
+  TeacherList,
+} from "./types";
 
 const HEADERS = {
   "User-Agent":
@@ -381,7 +394,7 @@ const TEACHER_RATING: string =
 const SCHOOL_BODY_QUERY = `\"query NewSearchSchoolsQuery(\\n  $query: SchoolSearchQuery!\\n) {\\n  newSearch {\\n    schools(query: $query) {\\n      edges {\\n        cursor\\n        node {\\n          id\\n          legacyId\\n          name\\n          city\\n          state\\n          departments {\\n            id\\n            name\\n          }\\n          numRatings\\n          avgRatingRounded\\n          summary {\\n            campusCondition\\n            campusLocation\\n            careerOpportunities\\n            clubAndEventActivities\\n            foodQuality\\n            internetSpeed\\n            libraryCondition\\n            schoolReputation\\n            schoolSafety\\n            schoolSatisfaction\\n            socialActivities\\n          }\\n        }\\n      }\\n      pageInfo {\\n        hasNextPage\\n        endCursor\\n      }\\n    }\\n  }\\n}\\n\"`;
 
 // Promise<Department[]>
-export async function search_school(schoolName: String): Promise<SchoolSearch> {
+async function search_school(schoolName: String): Promise<SchoolSearch> {
   // const variables = {
   //   query: {
   //     text: schoolName,
@@ -443,7 +456,7 @@ export async function search_school(schoolName: String): Promise<SchoolSearch> {
   return return_data;
 }
 
-export async function filter_school(
+async function filter_school(
   raw_school_data: SchoolSearch,
   original_school_name: string
 ): Promise<SchoolSearch> {
@@ -482,15 +495,12 @@ export async function filter_school(
 // TODO : define a function to extract the school and return it
 
 // function should return a string
-export async function retrieve_school_id(school_name: string): Promise<String> {
+async function retrieve_school_id(school_name: string): Promise<String> {
   let school_id = (await search_school(school_name)).school_node[0]["id"];
   return school_id;
 }
 
-export async function search_teacher(
-  professor_name: string,
-  school_name: string
-) {
+async function search_teacher(professor_name: string, school_name: string) {
   try {
     // retrieve school id
     const school_id = await retrieve_school_id(school_name);
@@ -514,7 +524,7 @@ export async function search_teacher(
   }
 }
 // NOTE : this function return the ratings of a particular professor
-export async function get_professor_rating(
+async function get_professor_rating(
   professor_name: string,
   college_name: string
 ): Promise<TeacherRatings[]> {
@@ -597,7 +607,7 @@ export async function get_professor_rating(
   return [];
 }
 
-export async function get_professor_list_by_school(college_name: string) {
+async function get_professor_list_by_school(college_name: string) {
   // retrieve the college ID
   const college_id = await retrieve_school_id(college_name);
   const response = await fetch(API_LINK, {
@@ -645,6 +655,7 @@ export async function get_professor_list_by_school(college_name: string) {
   return professor_list_array;
   // console.log(response_data.data.search.teachers.edges);
 }
+
 // // TODO : Define and filter out the departments into an array and store it in the form of an array
 // // use this as playground for testing
 // async function test_interface() {
@@ -667,3 +678,22 @@ export async function get_professor_list_by_school(college_name: string) {
 //   };
 //   // console.log(teacher_node_instance);
 // }
+
+export {
+  search_school,
+  retrieve_school_id,
+  filter_school,
+  search_teacher,
+  get_professor_rating,
+  get_professor_list_by_school,
+  API_LINK,
+  TEACHER_BODY_QUERY,
+  TEACHER_COMMENTS,
+  TEACHER_RATING,
+  TEACHER_RATING_QUERY,
+  TEACHER_LIST_QUERY,
+  GET_TEACHER_ID_QUERY,
+  SCHOOL_BODY_QUERY,
+  TEACHER_LIST,
+  HEADERS,
+};

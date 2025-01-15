@@ -1,24 +1,68 @@
-// Stores primary Classes and methods
 import {
   search_school,
   retrieve_school_id,
   filter_school,
-  SchoolSearch,
   search_teacher,
   get_professor_rating,
   get_professor_list_by_school,
+  API_LINK,
+  TEACHER_BODY_QUERY,
+  TEACHER_COMMENTS,
+  TEACHER_RATING,
+  TEACHER_RATING_QUERY,
+  TEACHER_LIST_QUERY,
+  GET_TEACHER_ID_QUERY,
+  SCHOOL_BODY_QUERY,
+  TEACHER_LIST,
+  HEADERS,
 } from "./features";
+
+import type {
+  TeacherList,
+  TeacherRatings,
+  SchoolSearch,
+  SchoolSummary,
+  School,
+  SchoolNode,
+  Department,
+  ProfessorRating,
+  TeacherSearch,
+  TeacherNode,
+} from "./types";
+
 import * as fs from "fs";
 
 export {
   search_school,
   retrieve_school_id,
   filter_school,
-  SchoolSearch,
   search_teacher,
   get_professor_rating,
   get_professor_list_by_school,
-} from "./features";
+  API_LINK,
+  TEACHER_BODY_QUERY,
+  TEACHER_COMMENTS,
+  TEACHER_RATING,
+  TEACHER_RATING_QUERY,
+  TEACHER_LIST_QUERY,
+  GET_TEACHER_ID_QUERY,
+  SCHOOL_BODY_QUERY,
+  TEACHER_LIST,
+  HEADERS,
+};
+
+export type {
+  TeacherList,
+  TeacherRatings,
+  SchoolSearch,
+  SchoolSummary,
+  School,
+  SchoolNode,
+  Department,
+  ProfessorRating,
+  TeacherSearch,
+  TeacherNode,
+};
 
 // (async function main() {
 //   // await test_interface();
