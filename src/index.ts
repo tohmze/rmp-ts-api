@@ -7,6 +7,7 @@ import {
   test_interface,
   search_teacher,
   get_professor_rating,
+  get_professor_list_by_school,
 } from "./features";
 import * as fs from "fs";
 (async function main() {
@@ -30,21 +31,52 @@ import * as fs from "fs";
     "Douglas Troeger"
   );
 
-  let filtered_data_class = await rmp_instance.get_college_info_and_save(
-    "random_json.json",
-    true
-  );
+  console.log(rmp_instance);
+  rmp_instance.set_college("Baruch College");
+  console.log(rmp_instance);
+  await rmp_instance.get_comments_by_professor();
 
-  const teacher_summary = await search_teacher(
-    "Hamed Fazli",
-    "City Collge of New York"
-  );
-  const professor_rating_list = await get_professor_rating(
-    "Douglas Troeger",
-    "City College of New York"
-  );
-  // console.log(filtered_data_class.department_map);
-  // console.log(filtered_data_class.school_node);
+  rmp_instance.set_professor_name("Kutub Thakur");
+  console.log(rmp_instance);
+
+  const professor_comments =
+    await rmp_instance.get_comments_by_professor_and_save(
+      "professor_comments.json"
+    );
+  console.log(professor_comments);
+
+  // let professor_list = await rmp_instance.get_professor_list();
+  // console.log(professor_list);
+
+  // let filtered_data_class = await rmp_instance.get_college_info_and_save(
+  //   "random_json.json",
+  //   true
+  // );
+
+  // let professor_list = await rmp_instance.get_professor_list();
+  // // console.log(professor_list);
+
+  // let professor_list_saved = await rmp_instance.get_professor_list_and_save(
+  //   "professor_list.json"
+  // );
+  // console.log(professor_list_saved);
+
+  // const teacher_summary = await search_teacher(
+  //   "Hamed Fazli",
+  //   "City Collge of New York"
+  // );
+  // const professor_ratings = await get_professor_rating(
+  //   "Douglas Troeger",
+  //   "City College of New York"
+  // );
+
+  // const professor_list = await get_professor_list_by_school(
+  //   "City College of New York"
+  // );
+
+  // console.log(professor_list);
+
+  // console.log(professor_ratings);
 })();
 
 // this is the main class
@@ -91,5 +123,61 @@ class RateMyProfessor {
     }
 
     return retrieved_data;
+  }
+
+  public async get_professor_list() {
+    return await get_professor_list_by_school(this.collegeName);
+  }
+
+  public async get_professor_list_and_save(file_name: string) {
+    const professor_list = await this.get_professor_list();
+
+    fs.writeFile(file_name, JSON.stringify(professor_list), (err) => {
+      if (err) {
+        console.error(`Error with saving data : ${err}`);
+      }
+      console.log("File created and saved data successfully!");
+    });
+
+    return professor_list;
+  }
+
+  public set_college(new_college_name: string) {
+    this.collegeName = new_college_name;
+  }
+
+  public set_professor_name(new_professor_name: string) {
+    this.teacherName = new_professor_name;
+  }
+
+  public set_college_and_professor_name(
+    college_name: string,
+    professor_name: string
+  ) {
+    this.set_college(college_name);
+    this.set_professor_name(professor_name);
+  }
+
+  public async get_comments_by_professor() {
+    if (!this.teacherName) {
+      console.error(
+        "Name of professor is empty, please add professor name before continuing!"
+      );
+    } else {
+      return await get_professor_rating(this.teacherName, this.collegeName);
+    }
+  }
+
+  public async get_comments_by_professor_and_save(file_name: string) {
+    let professor_comments = await this.get_comments_by_professor();
+    fs.writeFile(file_name, JSON.stringify(professor_comments), (err) => {
+      if (err) {
+        console.error("There was an error saving the data", err);
+      } else {
+        console.log("Successfully saved data to file!");
+      }
+    });
+
+    return professor_comments;
   }
 }

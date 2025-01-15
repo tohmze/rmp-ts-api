@@ -73,6 +73,37 @@ export interface SchoolSearch {
   department_map: Map<string, Department[]>;
 }
 
+// return type for retrieving teacher ratings
+export interface TeacherRatings {
+  class: String;
+  date_posted: String;
+  comment: String;
+  difficulty_rating: number;
+  teacher_id: String;
+  clarity_rating: number;
+  student_grade: String;
+  is_for_credit: boolean;
+  attendance_status: String;
+  is_online: boolean;
+  comment_likes: number;
+  comment_dislikes: number;
+  rating_tags: String;
+  textbook_use: number;
+
+  // NOTE : would_take_again if 0 return false, otherwise, return true
+  // would_take_again == 0? return false : return true;
+  would_take_again: boolean;
+}
+
+export interface TeacherList {
+  avg_difficulty: number; // float
+  avg_rating: number;
+  department: String;
+  name: String; // string concanctenate first and last name
+  num_ratings: number; // int
+  would_take_again_percent: number; // float
+}
+
 const HEADERS = {
   "User-Agent":
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 Firefox/129.0",
@@ -303,9 +334,49 @@ const TEACHER_RATING_QUERY = `query RatingsListQuery(
       }
     }
   }`;
+
+const TEACHER_LIST = `query TeacherSearchResultsPageQuery(
+        $query: TeacherSearchQuery!
+        $schoolID: ID
+        $includeSchoolFilter: Boolean!
+    ) {
+        search: newSearch {
+            teachers(query: $query, first: 1000, after: "") {
+                edges {
+                    node {
+                        id
+                        legacyId
+                        firstName
+                        lastName
+                        department
+                        avgRating
+                        numRatings
+                        wouldTakeAgainPercent
+                        avgDifficulty
+                        school {
+                            name
+                            id
+                        }
+                    }
+                }
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+                resultCount
+            }
+        }
+        school: node(id: $schoolID) @include(if: $includeSchoolFilter) {
+            __typename
+            ... on School {
+                name
+            }
+            id
+        }
+    }`;
 // TODO : experimental query
-// const TEACHER_RATING_QUERY: string =
-//   "query RatingsListQuery(\n  $count: Int!\n  $id: ID!\n  $courseFilter: String\n  $cursor: String\n) {\n  node(id: $id) {\n    __typename\n    ... on Teacher {\n      ...RatingsList_teacher_4pguUW\n    }\n    id\n  }\n}\n\nfragment RatingsList_teacher_4pguUW on Teacher {\n  id\n  legacyId\n  lastName\n  numRatings\n  school {\n    id\n    legacyId\n    name\n    city\n    state\n    avgRating\n    numRatings\n  }\n  ...Rating_teacher\n  ...NoRatingsArea_teacher\n  ratings(first: $count, after: $cursor, courseFilter: $courseFilter) {\n    edges {\n      cursor\n      node {\n        ...Rating_rating\n        id\n        __typename\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Rating_teacher on Teacher {\n  ...RatingFooter_teacher\n  ...RatingSuperHeader_teacher\n  ...ProfessorNoteSection_teacher\n}\n\nfragment NoRatingsArea_teacher on Teacher {\n  lastName\n  ...RateTeacherLink_teacher\n}\n\nfragment Rating_rating on Rating {\n  comment\n  flagStatus\n  createdByUser\n  teacherNote {\n    id\n  }\n  ...RatingHeader_rating\n  ...RatingSuperHeader_rating\n  ...RatingValues_rating\n  ...CourseMeta_rating\n  ...RatingTags_rating\n  ...RatingFooter_rating\n  ...ProfessorNoteSection_rating\n}\n\nfragment RatingHeader_rating on Rating {\n  legacyId\n  date\n  class\n  helpfulRating\n  clarityRating\n  isForOnlineClass\n}\n\nfragment RatingSuperHeader_rating on Rating {\n  legacyId\n}\n\nfragment RatingValues_rating on Rating {\n  helpfulRating\n  clarityRating\n  difficultyRating\n}\n\nfragment CourseMeta_rating on Rating {\n  attendanceMandatory\n  wouldTakeAgain\n  grade\n  textbookUse\n  isForOnlineClass\n  isForCredit\n}\n\nfragment RatingTags_rating on Rating {\n  ratingTags\n}\n\nfragment RatingFooter_rating on Rating {\n  id\n  comment\n  adminReviewedAt\n  flagStatus\n  legacyId\n  thumbsUpTotal\n  thumbsDownTotal\n  thumbs {\n    thumbsUp\n    thumbsDown\n    computerId\n    id\n  }\n  teacherNote {\n    id\n  }\n  ...Thumbs_rating\n}\n\nfragment ProfessorNoteSection_rating on Rating {\n  teacherNote {\n    ...ProfessorNote_note\n    id\n  }\n  ...ProfessorNoteEditor_rating\n}\n\nfragment ProfessorNote_note on TeacherNotes {\n  comment\n  ...ProfessorNoteHeader_note\n  ...ProfessorNoteFooter_note\n}\n\nfragment ProfessorNoteEditor_rating on Rating {\n  id\n  legacyId\n  class\n  teacherNote {\n    id\n    teacherId\n    comment\n  }\n}\n\nfragment ProfessorNoteHeader_note on TeacherNotes {\n  createdAt\n  updatedAt\n}\n\nfragment ProfessorNoteFooter_note on TeacherNotes {\n  legacyId\n  flagStatus\n}\n\nfragment Thumbs_rating on Rating {\n  id\n  comment\n  adminReviewedAt\n  flagStatus\n  legacyId\n  thumbsUpTotal\n  thumbsDownTotal\n  thumbs {\n    computerId\n    thumbsUp\n    thumbsDown\n    id\n  }\n  teacherNote {\n    id\n  }\n}\n\nfragment RateTeacherLink_teacher on Teacher {\n  legacyId\n  numRatings\n  lockStatus\n}\n\nfragment RatingFooter_teacher on Teacher {\n  id\n  legacyId\n  lockStatus\n  isProfCurrentUser\n  ...Thumbs_teacher\n}\n\nfragment RatingSuperHeader_teacher on Teacher {\n  firstName\n  lastName\n  legacyId\n  school {\n    name\n    id\n  }\n}\n\nfragment ProfessorNoteSection_teacher on Teacher {\n  ...ProfessorNote_teacher\n  ...ProfessorNoteEditor_teacher\n}\n\nfragment ProfessorNote_teacher on Teacher {\n  ...ProfessorNoteHeader_teacher\n  ...ProfessorNoteFooter_teacher\n}\n\nfragment ProfessorNoteEditor_teacher on Teacher {\n  id\n}\n\nfragment ProfessorNoteHeader_teacher on Teacher {\n  lastName\n}\n\nfragment ProfessorNoteFooter_teacher on Teacher {\n  legacyId\n  isProfCurrentUser\n}\n\nfragment Thumbs_teacher on Teacher {\n  id\n  legacyId\n  lockStatus\n  isProfCurrentUser\n}\n";
+const TEACHER_RATING: string =
+  "query RatingsListQuery(\n  $count: Int!\n  $id: ID!\n  $courseFilter: String\n  $cursor: String\n) {\n  node(id: $id) {\n    __typename\n    ... on Teacher {\n      ...RatingsList_teacher_4pguUW\n    }\n    id\n  }\n}\n\nfragment RatingsList_teacher_4pguUW on Teacher {\n  id\n  legacyId\n  lastName\n  numRatings\n  school {\n    id\n    legacyId\n    name\n    city\n    state\n    avgRating\n    numRatings\n  }\n  ...Rating_teacher\n  ...NoRatingsArea_teacher\n  ratings(first: $count, after: $cursor, courseFilter: $courseFilter) {\n    edges {\n      cursor\n      node {\n        ...Rating_rating\n        id\n        __typename\n      }\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Rating_teacher on Teacher {\n  ...RatingFooter_teacher\n  ...RatingSuperHeader_teacher\n  ...ProfessorNoteSection_teacher\n}\n\nfragment NoRatingsArea_teacher on Teacher {\n  lastName\n  ...RateTeacherLink_teacher\n}\n\nfragment Rating_rating on Rating {\n  comment\n  flagStatus\n  createdByUser\n  teacherNote {\n    id\n  }\n  ...RatingHeader_rating\n  ...RatingSuperHeader_rating\n  ...RatingValues_rating\n  ...CourseMeta_rating\n  ...RatingTags_rating\n  ...RatingFooter_rating\n  ...ProfessorNoteSection_rating\n}\n\nfragment RatingHeader_rating on Rating {\n  legacyId\n  date\n  class\n  helpfulRating\n  clarityRating\n  isForOnlineClass\n}\n\nfragment RatingSuperHeader_rating on Rating {\n  legacyId\n}\n\nfragment RatingValues_rating on Rating {\n  helpfulRating\n  clarityRating\n  difficultyRating\n}\n\nfragment CourseMeta_rating on Rating {\n  attendanceMandatory\n  wouldTakeAgain\n  grade\n  textbookUse\n  isForOnlineClass\n  isForCredit\n}\n\nfragment RatingTags_rating on Rating {\n  ratingTags\n}\n\nfragment RatingFooter_rating on Rating {\n  id\n  comment\n  adminReviewedAt\n  flagStatus\n  legacyId\n  thumbsUpTotal\n  thumbsDownTotal\n  thumbs {\n    thumbsUp\n    thumbsDown\n    computerId\n    id\n  }\n  teacherNote {\n    id\n  }\n  ...Thumbs_rating\n}\n\nfragment ProfessorNoteSection_rating on Rating {\n  teacherNote {\n    ...ProfessorNote_note\n    id\n  }\n  ...ProfessorNoteEditor_rating\n}\n\nfragment ProfessorNote_note on TeacherNotes {\n  comment\n  ...ProfessorNoteHeader_note\n  ...ProfessorNoteFooter_note\n}\n\nfragment ProfessorNoteEditor_rating on Rating {\n  id\n  legacyId\n  class\n  teacherNote {\n    id\n    teacherId\n    comment\n  }\n}\n\nfragment ProfessorNoteHeader_note on TeacherNotes {\n  createdAt\n  updatedAt\n}\n\nfragment ProfessorNoteFooter_note on TeacherNotes {\n  legacyId\n  flagStatus\n}\n\nfragment Thumbs_rating on Rating {\n  id\n  comment\n  adminReviewedAt\n  flagStatus\n  legacyId\n  thumbsUpTotal\n  thumbsDownTotal\n  thumbs {\n    computerId\n    thumbsUp\n    thumbsDown\n    id\n  }\n  teacherNote {\n    id\n  }\n}\n\nfragment RateTeacherLink_teacher on Teacher {\n  legacyId\n  numRatings\n  lockStatus\n}\n\nfragment RatingFooter_teacher on Teacher {\n  id\n  legacyId\n  lockStatus\n  isProfCurrentUser\n  ...Thumbs_teacher\n}\n\nfragment RatingSuperHeader_teacher on Teacher {\n  firstName\n  lastName\n  legacyId\n  school {\n    name\n    id\n  }\n}\n\nfragment ProfessorNoteSection_teacher on Teacher {\n  ...ProfessorNote_teacher\n  ...ProfessorNoteEditor_teacher\n}\n\nfragment ProfessorNote_teacher on Teacher {\n  ...ProfessorNoteHeader_teacher\n  ...ProfessorNoteFooter_teacher\n}\n\nfragment ProfessorNoteEditor_teacher on Teacher {\n  id\n}\n\nfragment ProfessorNoteHeader_teacher on Teacher {\n  lastName\n}\n\nfragment ProfessorNoteFooter_teacher on Teacher {\n  legacyId\n  isProfCurrentUser\n}\n\nfragment Thumbs_teacher on Teacher {\n  id\n  legacyId\n  lockStatus\n  isProfCurrentUser\n}\n";
 
 const SCHOOL_BODY_QUERY = `\"query NewSearchSchoolsQuery(\\n  $query: SchoolSearchQuery!\\n) {\\n  newSearch {\\n    schools(query: $query) {\\n      edges {\\n        cursor\\n        node {\\n          id\\n          legacyId\\n          name\\n          city\\n          state\\n          departments {\\n            id\\n            name\\n          }\\n          numRatings\\n          avgRatingRounded\\n          summary {\\n            campusCondition\\n            campusLocation\\n            careerOpportunities\\n            clubAndEventActivities\\n            foodQuality\\n            internetSpeed\\n            libraryCondition\\n            schoolReputation\\n            schoolSafety\\n            schoolSatisfaction\\n            socialActivities\\n          }\\n        }\\n      }\\n      pageInfo {\\n        hasNextPage\\n        endCursor\\n      }\\n    }\\n  }\\n}\\n\"`;
 
@@ -446,18 +517,20 @@ export async function search_teacher(
 export async function get_professor_rating(
   professor_name: string,
   college_name: string
-) {
+): Promise<TeacherRatings[]> {
   try {
     const teacher_summary = await search_teacher(professor_name, college_name);
     console;
     const teacher_id = teacher_summary.id;
 
     // NOTE : observe how the payload body can be for GRAPHQL using JSON.stringify
+
+    // query can be passed in directly, refer to the website to see how the variable body looks
     const response = await fetch(API_LINK, {
       credentials: "include",
       headers: HEADERS,
       body: JSON.stringify({
-        query: TEACHER_RATING_QUERY,
+        query: TEACHER_RATING, // OR TEACHER_RATING_QUERY
         variables: {
           count: 1000,
           id: teacher_id,
@@ -474,12 +547,104 @@ export async function get_professor_rating(
     }
 
     const data = await response.json();
-    console.log(data.data.node.ratings.edges);
+
+    // returns an array that needs to be itereated over.
+    const ratings_data = data.data.node.ratings.edges;
+    const teacher_ratings_data: TeacherRatings[] = [];
+
+    // iterate over the corresponding array
+    for (const current_data of ratings_data) {
+      let teacher_ratings_instance: TeacherRatings = {
+        class: current_data.node.class,
+
+        date_posted: current_data.node.date,
+
+        comment: current_data.node.comment,
+
+        difficulty_rating: parseFloat(current_data.node.difficultyRating),
+
+        teacher_id: current_data.node.id,
+
+        clarity_rating: parseFloat(current_data.node.clarityRating),
+
+        student_grade: current_data.node.grade,
+
+        is_for_credit: current_data.node.isForCredit,
+
+        attendance_status: current_data.node.attendanceMandatory,
+
+        is_online: current_data.node.isForOnlineClass,
+
+        comment_likes: parseInt(current_data.node.thumbsUpTotal),
+
+        comment_dislikes: parseInt(current_data.node.thumbsDownTotal),
+
+        rating_tags: current_data.node.ratingTags,
+
+        textbook_use: parseInt(current_data.node.textbookUse),
+
+        would_take_again: current_data.node.wouldTakeAgain == 0 ? false : true,
+      };
+      teacher_ratings_data.push(teacher_ratings_instance);
+    }
+
+    return teacher_ratings_data;
   } catch (error) {
     console.error(error);
   }
+
+  // return empty data if nothing can be found
+  return [];
 }
 
+export async function get_professor_list_by_school(college_name: string) {
+  // retrieve the college ID
+  const college_id = await retrieve_school_id(college_name);
+  const response = await fetch(API_LINK, {
+    credentials: "include",
+    headers: HEADERS,
+    body: JSON.stringify({
+      query: TEACHER_LIST,
+      variables: {
+        query: {
+          text: "", // ensures all professor list is retrieved
+          schoolID: college_id,
+          fallback: true,
+          departmentID: null,
+        },
+        schoolID: college_id,
+        includeSchoolFilter: true,
+      },
+    }),
+    method: "POST",
+    mode: "cors",
+  });
+
+  if (!response.ok) {
+    throw new Error("Network response from RMP not ok.");
+  }
+
+  const response_data = await response.json();
+
+  const professor_list = response_data.data.search.teachers.edges;
+
+  const professor_list_array: TeacherList[] = [];
+  for (const node of professor_list) {
+    let curr_node = node.node;
+    let teacher_list_instance: TeacherList = {
+      avg_difficulty: parseFloat(curr_node.avgDifficulty),
+      avg_rating: parseFloat(curr_node.avgRating),
+      department: curr_node.department,
+      name: curr_node.firstName.concat(" ", curr_node.lastName),
+      num_ratings: parseInt(curr_node.numRatings),
+      would_take_again_percent: parseFloat(curr_node.wouldTakeAgainPercent),
+    };
+    professor_list_array.push(teacher_list_instance);
+  }
+
+  return professor_list_array;
+  // console.log(response_data.data.search.teachers.edges);
+}
 // TODO : Define and filter out the departments into an array and store it in the form of an array
 // use this as playground for testing
 export async function test_interface() {
