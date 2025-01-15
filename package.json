@@ -1,6 +1,6 @@
 {
   "name": "rate-my-professor-api-ts",
-  "version": "0.0.21",
+  "version": "0.0.211",
   "main": "dist/index.js",
   "license": "MIT",
   "type": "module",
@@ -33,7 +33,7 @@
     "test": "echo \"Error : no test specified\" && exit 1",
     "dev": "npx tsx src/index.ts",
     "build": "tsc --noEmit false",
-    "pack": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "rate my professor",
