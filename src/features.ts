@@ -1,4 +1,4 @@
-const axios = require("axios").default;
+// const axios = require("axios").default;
 export interface School {
   id: String;
   name: String;
@@ -424,8 +424,8 @@ export async function search_school(schoolName: String): Promise<SchoolSearch> {
       state: data["node"]["state"],
       summary: data["node"]["summary"],
     };
-    college_to_department_map[data["node"]["name"]] =
-      data["node"]["departments"];
+    // college_to_department_map[data["node"]["name"]] =
+    //   data["node"]["departments"];
 
     college_to_department_map.set(
       data["node"]["name"],

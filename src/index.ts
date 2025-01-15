@@ -82,7 +82,7 @@ import * as fs from "fs";
 // this is the main class
 class RateMyProfessor {
   public collegeName: string;
-  public teacherName: string;
+  public teacherName: string | any;
 
   constructor(college_name: string, teacher_name?: string) {
     // constructor version 2 if teacher_name doesn't exist
