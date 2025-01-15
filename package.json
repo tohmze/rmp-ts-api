@@ -1,22 +1,39 @@
 {
   "name": "rate-my-professor-api-ts",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.11",
+  "main": "main/index.js",
   "license": "MIT",
-  "description": "",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": [
+        "./dist/index.d.ts",
+        "./dist/features.d.ts"
+      ],
+      "import": [
+        "./dist/index.js",
+        "./dist/features.js"
+      ]
+    }
+  },
+  "description": "lightweight RMP API wrapper",
   "devDependencies": {
     "@types/node": "^22.10.6",
     "typescript": "^5.7.3"
   },
   "repository": {
     "type": "git",
-    "url": "TBD"
+    "url": "https://github.com/DeveloperMindset123/rmp-ts-api.git"
   },
   "scripts": {
     "test": "echo \"Error : no test specified\" && exit 1",
     "dev": "npx tsx src/index.ts",
-    "build": "tsc",
-    "prepublishOnly": "yarn build && npm run build"
+    "build": "tsc --noEmit false",
+    "pack": "npm run build"
   },
   "keywords": [
     "rate my professor",

@@ -4,7 +4,6 @@ import {
   retrieve_school_id,
   filter_school,
   SchoolSearch,
-  test_interface,
   search_teacher,
   get_professor_rating,
   get_professor_list_by_school,
@@ -80,9 +79,9 @@ import * as fs from "fs";
 })();
 
 // this is the main class
-class RateMyProfessor {
+export class RateMyProfessor {
   public collegeName: string;
-  public teacherName: string;
+  public teacherName: string | any;
 
   constructor(college_name: string, teacher_name?: string) {
     // constructor version 2 if teacher_name doesn't exist
