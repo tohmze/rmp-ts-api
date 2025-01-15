@@ -1,7 +1,14 @@
 // Stores primary Classes and methods
-import { test_interface } from "./features";
-import { search_school } from "./features";
-import { filter_school } from "./features";
+import {
+  search_school,
+  retrieve_school_id,
+  filter_school,
+  SchoolSearch,
+  test_interface,
+  search_teacher,
+  get_professor_rating,
+} from "./features";
+import * as fs from "fs";
 (async function main() {
   // await test_interface();
   const search_school_data = await search_school("City College of New York");
@@ -11,6 +18,9 @@ import { filter_school } from "./features";
     search_school_data,
     "City College of New York"
   );
+
+  let school_id = await retrieve_school_id("City College of New York");
+  // console.log(school_id);
   // console.log(filtered_data.school_node);
   // console.log(filtered_data.department_map);
 
@@ -20,8 +30,21 @@ import { filter_school } from "./features";
     "Douglas Troeger"
   );
 
-  console.log(rmp_instance);
-  console.log(rmp_instance2);
+  let filtered_data_class = await rmp_instance.get_college_info_and_save(
+    "random_json.json",
+    true
+  );
+
+  const teacher_summary = await search_teacher(
+    "Hamed Fazli",
+    "City Collge of New York"
+  );
+  const professor_rating_list = await get_professor_rating(
+    "Douglas Troeger",
+    "City College of New York"
+  );
+  // console.log(filtered_data_class.department_map);
+  // console.log(filtered_data_class.school_node);
 })();
 
 // this is the main class
@@ -39,5 +62,34 @@ class RateMyProfessor {
     } else {
       this.collegeName = college_name;
     }
+  }
+
+  // get college summary
+  public async get_college_info(retrieve_all: boolean): Promise<SchoolSearch> {
+    if (retrieve_all) {
+      return await search_school(this.collegeName);
+    } else {
+      return await filter_school(
+        await search_school(this.collegeName),
+        this.collegeName
+      );
+    }
+  }
+
+  public async get_college_info_and_save(
+    file_name: string,
+    retrieve_all: boolean
+  ): Promise<SchoolSearch> {
+    let retrieved_data = await this.get_college_info(retrieve_all);
+    if (retrieve_all) {
+      fs.writeFile(file_name, JSON.stringify(retrieved_data), (err) => {
+        if (err) {
+          console.error(`Error with saving data : ${err}`);
+        }
+        console.log("File created and saved data successfully!");
+      });
+    }
+
+    return retrieved_data;
   }
 }
