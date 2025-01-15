@@ -7,6 +7,7 @@ import {
   test_interface,
   search_teacher,
   get_professor_rating,
+  get_professor_list_by_school,
 } from "./features";
 import * as fs from "fs";
 (async function main() {
@@ -44,7 +45,13 @@ import * as fs from "fs";
     "City College of New York"
   );
 
-  console.log(professor_ratings);
+  const professor_list = await get_professor_list_by_school(
+    "City College of New York"
+  );
+
+  console.log(professor_list);
+
+  // console.log(professor_ratings);
 })();
 
 // this is the main class
