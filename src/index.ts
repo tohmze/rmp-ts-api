@@ -9,74 +9,75 @@ import {
   get_professor_list_by_school,
 } from "./features";
 import * as fs from "fs";
-(async function main() {
-  // await test_interface();
-  const search_school_data = await search_school("City College of New York");
-  // console.log(search_school_data);
-  // console.log(search_school_data.school_node);
-  const filtered_data = await filter_school(
-    search_school_data,
-    "City College of New York"
-  );
 
-  let school_id = await retrieve_school_id("City College of New York");
-  // console.log(school_id);
-  // console.log(filtered_data.school_node);
-  // console.log(filtered_data.department_map);
+// (async function main() {
+//   // await test_interface();
+//   const search_school_data = await search_school("City College of New York");
+//   // console.log(search_school_data);
+//   // console.log(search_school_data.school_node);
+//   const filtered_data = await filter_school(
+//     search_school_data,
+//     "City College of New York"
+//   );
 
-  const rmp_instance = new RateMyProfessor("City College of New York");
-  const rmp_instance2 = new RateMyProfessor(
-    "City College of New York",
-    "Douglas Troeger"
-  );
+//   let school_id = await retrieve_school_id("City College of New York");
+//   // console.log(school_id);
+//   // console.log(filtered_data.school_node);
+//   // console.log(filtered_data.department_map);
 
-  console.log(rmp_instance);
-  rmp_instance.set_college("Baruch College");
-  console.log(rmp_instance);
-  await rmp_instance.get_comments_by_professor();
+//   const rmp_instance = new RateMyProfessor("City College of New York");
+//   const rmp_instance2 = new RateMyProfessor(
+//     "City College of New York",
+//     "Douglas Troeger"
+//   );
 
-  rmp_instance.set_professor_name("Kutub Thakur");
-  console.log(rmp_instance);
+//   console.log(rmp_instance);
+//   rmp_instance.set_college("Baruch College");
+//   console.log(rmp_instance);
+//   await rmp_instance.get_comments_by_professor();
 
-  const professor_comments =
-    await rmp_instance.get_comments_by_professor_and_save(
-      "professor_comments.json"
-    );
-  console.log(professor_comments);
+//   rmp_instance.set_professor_name("Kutub Thakur");
+//   console.log(rmp_instance);
 
-  // let professor_list = await rmp_instance.get_professor_list();
-  // console.log(professor_list);
+//   const professor_comments =
+//     await rmp_instance.get_comments_by_professor_and_save(
+//       "professor_comments.json"
+//     );
+//   console.log(professor_comments);
 
-  // let filtered_data_class = await rmp_instance.get_college_info_and_save(
-  //   "random_json.json",
-  //   true
-  // );
+//   // let professor_list = await rmp_instance.get_professor_list();
+//   // console.log(professor_list);
 
-  // let professor_list = await rmp_instance.get_professor_list();
-  // // console.log(professor_list);
+//   // let filtered_data_class = await rmp_instance.get_college_info_and_save(
+//   //   "random_json.json",
+//   //   true
+//   // );
 
-  // let professor_list_saved = await rmp_instance.get_professor_list_and_save(
-  //   "professor_list.json"
-  // );
-  // console.log(professor_list_saved);
+//   // let professor_list = await rmp_instance.get_professor_list();
+//   // // console.log(professor_list);
 
-  // const teacher_summary = await search_teacher(
-  //   "Hamed Fazli",
-  //   "City Collge of New York"
-  // );
-  // const professor_ratings = await get_professor_rating(
-  //   "Douglas Troeger",
-  //   "City College of New York"
-  // );
+//   // let professor_list_saved = await rmp_instance.get_professor_list_and_save(
+//   //   "professor_list.json"
+//   // );
+//   // console.log(professor_list_saved);
 
-  // const professor_list = await get_professor_list_by_school(
-  //   "City College of New York"
-  // );
+//   // const teacher_summary = await search_teacher(
+//   //   "Hamed Fazli",
+//   //   "City Collge of New York"
+//   // );
+//   // const professor_ratings = await get_professor_rating(
+//   //   "Douglas Troeger",
+//   //   "City College of New York"
+//   // );
 
-  // console.log(professor_list);
+//   // const professor_list = await get_professor_list_by_school(
+//   //   "City College of New York"
+//   // );
 
-  // console.log(professor_ratings);
-})();
+//   // console.log(professor_list);
+
+//   // console.log(professor_ratings);
+// })();
 
 // this is the main class
 export class RateMyProfessor {
