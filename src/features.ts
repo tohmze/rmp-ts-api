@@ -645,25 +645,25 @@ export async function get_professor_list_by_school(college_name: string) {
   return professor_list_array;
   // console.log(response_data.data.search.teachers.edges);
 }
-// TODO : Define and filter out the departments into an array and store it in the form of an array
-// use this as playground for testing
-export async function test_interface() {
-  const school_instance = {
-    id: "some other id",
-    name: "name of school",
-  };
-  const teacher_node_instance: TeacherNode = {
-    avg_difficulty: 10,
-    avg_rating: 10,
-    department: "unknown",
-    first_name: "some first name",
-    last_name: "some last name",
-    legacy_id: 10,
-    id: "Some id",
-    is_saved: false,
-    num_ratings: 10,
-    school: school_instance,
-    would_take_again_percent: 10.0,
-  };
-  // console.log(teacher_node_instance);
-}
+// // TODO : Define and filter out the departments into an array and store it in the form of an array
+// // use this as playground for testing
+// async function test_interface() {
+//   const school_instance = {
+//     id: "some other id",
+//     name: "name of school",
+//   };
+//   const teacher_node_instance: TeacherNode = {
+//     avg_difficulty: 10,
+//     avg_rating: 10,
+//     department: "unknown",
+//     first_name: "some first name",
+//     last_name: "some last name",
+//     legacy_id: 10,
+//     id: "Some id",
+//     is_saved: false,
+//     num_ratings: 10,
+//     school: school_instance,
+//     would_take_again_percent: 10.0,
+//   };
+//   // console.log(teacher_node_instance);
+// }

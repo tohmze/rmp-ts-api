@@ -10,8 +10,14 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": [
+        "./dist/index.d.ts",
+        "./dist/features.d.ts"
+      ],
+      "import": [
+        "./dist/index.js",
+        "./dist/features.js"
+      ]
     }
   },
   "description": "lightweight RMP API wrapper",
