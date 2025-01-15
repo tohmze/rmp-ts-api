@@ -1,84 +1,69 @@
-// Stores primary Classes and methods
 import {
   search_school,
   retrieve_school_id,
   filter_school,
-  SchoolSearch,
   search_teacher,
   get_professor_rating,
   get_professor_list_by_school,
+  API_LINK,
+  TEACHER_BODY_QUERY,
+  TEACHER_COMMENTS,
+  TEACHER_RATING,
+  TEACHER_RATING_QUERY,
+  TEACHER_LIST_QUERY,
+  GET_TEACHER_ID_QUERY,
+  SCHOOL_BODY_QUERY,
+  TEACHER_LIST,
+  HEADERS,
 } from "./features";
+
+import type {
+  TeacherList,
+  TeacherRatings,
+  SchoolSearch,
+  SchoolSummary,
+  School,
+  SchoolNode,
+  Department,
+  ProfessorRating,
+  TeacherSearch,
+  TeacherNode,
+} from "./types";
+
 import * as fs from "fs";
-(async function main() {
-  // await test_interface();
-  const search_school_data = await search_school("City College of New York");
-  // console.log(search_school_data);
-  // console.log(search_school_data.school_node);
-  const filtered_data = await filter_school(
-    search_school_data,
-    "City College of New York"
-  );
 
-  let school_id = await retrieve_school_id("City College of New York");
-  // console.log(school_id);
-  // console.log(filtered_data.school_node);
-  // console.log(filtered_data.department_map);
+export {
+  search_school,
+  retrieve_school_id,
+  filter_school,
+  search_teacher,
+  get_professor_rating,
+  get_professor_list_by_school,
+  API_LINK,
+  TEACHER_BODY_QUERY,
+  TEACHER_COMMENTS,
+  TEACHER_RATING,
+  TEACHER_RATING_QUERY,
+  TEACHER_LIST_QUERY,
+  GET_TEACHER_ID_QUERY,
+  SCHOOL_BODY_QUERY,
+  TEACHER_LIST,
+  HEADERS,
+};
 
-  const rmp_instance = new RateMyProfessor("City College of New York");
-  const rmp_instance2 = new RateMyProfessor(
-    "City College of New York",
-    "Douglas Troeger"
-  );
+export type {
+  TeacherList,
+  TeacherRatings,
+  SchoolSearch,
+  SchoolSummary,
+  School,
+  SchoolNode,
+  Department,
+  ProfessorRating,
+  TeacherSearch,
+  TeacherNode,
+};
 
-  console.log(rmp_instance);
-  rmp_instance.set_college("Baruch College");
-  console.log(rmp_instance);
-  await rmp_instance.get_comments_by_professor();
-
-  rmp_instance.set_professor_name("Kutub Thakur");
-  console.log(rmp_instance);
-
-  const professor_comments =
-    await rmp_instance.get_comments_by_professor_and_save(
-      "professor_comments.json"
-    );
-  console.log(professor_comments);
-
-  // let professor_list = await rmp_instance.get_professor_list();
-  // console.log(professor_list);
-
-  // let filtered_data_class = await rmp_instance.get_college_info_and_save(
-  //   "random_json.json",
-  //   true
-  // );
-
-  // let professor_list = await rmp_instance.get_professor_list();
-  // // console.log(professor_list);
-
-  // let professor_list_saved = await rmp_instance.get_professor_list_and_save(
-  //   "professor_list.json"
-  // );
-  // console.log(professor_list_saved);
-
-  // const teacher_summary = await search_teacher(
-  //   "Hamed Fazli",
-  //   "City Collge of New York"
-  // );
-  // const professor_ratings = await get_professor_rating(
-  //   "Douglas Troeger",
-  //   "City College of New York"
-  // );
-
-  // const professor_list = await get_professor_list_by_school(
-  //   "City College of New York"
-  // );
-
-  // console.log(professor_list);
-
-  // console.log(professor_ratings);
-})();
-
-// this is the main class
 export class RateMyProfessor {
   public collegeName: string;
   public teacherName: string | any;
