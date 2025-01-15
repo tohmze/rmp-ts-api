@@ -43,8 +43,8 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
    let college_info_all = await rmp_instance.get_college_info(true); 
    
    // uncomment the lines below to see the response
-   // console.log(collge_info);
-   // console.log(collge_info_all);
+//    console.log(college_info);
+//    console.log(college_info_all);
 })();
 ```
 
@@ -60,7 +60,7 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
    //
    // for the current university that the constructor has been set to
    //
-   let list_of_professors = await rmp_instance.get_professor_list());
+   let list_of_professors = await rmp_instance.get_professor_list();
    console.log(list_of_professors);
    
    // method that saves result within a json file
@@ -83,16 +83,19 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
    // setter method to update college
    // setter method 1
    rmp_instance.set_college("Baruch College");
+   console.log(rmp_instance);
    
    // setter method to update professor
    // even if originally professor was null
    // setter method 2
-   rmp_instance.set_professor_name("Kutub Thankur);
-   
+   rmp_instance.set_professor_name("Kutub Thankur");
+   console.log(rmp_instance);
+
    // the college and professor name
    // can also be set simultaneously
    // setter method 3
    rmp_instance.set_college_and_professor_name("Baruch College", "Kutub Thakur");
+   console.log(rmp_instance);
 })();
 ```
 
