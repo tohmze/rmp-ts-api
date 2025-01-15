@@ -1,7 +1,13 @@
 // Stores primary Classes and methods
-import { SchoolSearch, test_interface } from "./features";
-import { search_school } from "./features";
-import { filter_school } from "./features";
+import {
+  search_school,
+  retrieve_school_id,
+  filter_school,
+  SchoolSearch,
+  test_interface,
+  search_teacher,
+  get_professor_rating,
+} from "./features";
 import * as fs from "fs";
 (async function main() {
   // await test_interface();
@@ -12,6 +18,9 @@ import * as fs from "fs";
     search_school_data,
     "City College of New York"
   );
+
+  let school_id = await retrieve_school_id("City College of New York");
+  // console.log(school_id);
   // console.log(filtered_data.school_node);
   // console.log(filtered_data.department_map);
 
@@ -25,8 +34,17 @@ import * as fs from "fs";
     "random_json.json",
     true
   );
-  console.log(filtered_data_class.department_map);
-  console.log(filtered_data_class.school_node);
+
+  const teacher_summary = await search_teacher(
+    "Hamed Fazli",
+    "City Collge of New York"
+  );
+  const professor_rating_list = await get_professor_rating(
+    "Douglas Troeger",
+    "City College of New York"
+  );
+  // console.log(filtered_data_class.department_map);
+  // console.log(filtered_data_class.school_node);
 })();
 
 // this is the main class
