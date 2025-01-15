@@ -1,0 +1,14 @@
+{
+  "__typename": "Teacher",
+  "avgDifficulty": 4.7,
+  "avgRating": 2,
+  "department": "Computer Science",
+  "firstName": "Douglas",
+  "id": "VGVhY2hlci00MzIxNDI=",
+  "isSaved": false,
+  "lastName": "Troeger",
+  "legacyId": 432142,
+  "numRatings": 137,
+  "school": { "id": "U2Nob29sLTIyNA==", "name": "City College of New York" },
+  "wouldTakeAgainPercent": 9.4828
+}

@@ -129,6 +129,29 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
 })();
 ```
 
+**Method to retrieve information about a particular professor**
+- This method will retrieve information such as their average difficulty, ratings, number of ratings, department and average percentage willing to retake the professor.
+- This method does not return the ratings, to retrieve all the ratings for a particular professor, use `get_comments_by_professor()` instead.
+
+```typescript
+(async function main() {
+  // instantiate a new professor
+  let rmp_instance = new RateMyProfessor(
+    "City College of New York",
+    "Douglas Troeger"
+  );
+
+  // retrieve information about professor
+  // without their ratings
+  // method 1
+  console.log(await rmp_instance.get_professor_info());
+
+  // save and return the professor's information
+  console.log(
+    await rmp_instance.get_professor_info_and_save("professor_info.json")
+  );
+})();
+```
 **Sample Output**
 - Below is an example of what the college info looks like.
 - If boolean value within `get_college_info()` is set to `true`.
