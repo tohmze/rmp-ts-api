@@ -1,20 +1,78 @@
 # rate-my-professor-api-ts
 ## Overview
-A lightweight API wrapper around [__Rate My Professor__](__https://www.ratemyprofessors.com/__). Complex API calls and graphql queries have been abstracted away and simplified into the list of following features (with examples provided below):
+A lightweight API wrapper around [**__Rate My Professor__**](____https://www.ratemyprofessors.com/____). Complex API calls and graphql queries have been abstracted away and simplified into the list of following features (with examples provided below):
 - ****Retrieve College Summary**** : Get information related to a particular college. Such as the list of departments, loction of the college, condition of the campus, safety and satisfaction level and more.
 
-- ****Retrieve Summary About a Particular Professor**** : Retrieves information about the professor, information such as the number of ratings that the professor has recieved, the department from which the particular professor is from, original link to the Rate My Professor Website.
+- **Retrieve Summary About a Particular Professor** : Retrieves information about the professor, information such as the number of ratings that the professor has recieved, the department from which the particular professor is from, original link to the Rate My Professor Website.
     - In addition, information such as average rating, average difficulty, and percentage of student likely to retake this particular professor.
 
-- ****Retrieve List of Professors**** : If an user wants to obtain information about the number of professors currently recorded within Rate My Professor, there's a method that can retrieve the list of all the professors for a particular college.
+- **Retrieve List of Professors** : If an user wants to obtain information about the number of professors currently recorded within Rate My Professor, there's a method that can retrieve the list of all the professors for a particular college.
     - ****NOTE**** : New professors may not always be recorded within Rate My Professor, esepcially if they happen to be graduate students or their first semester teaching, this information can always be verified on the actual college website.
 
-- ****Retrieve Comments**** : Users can retrieve list of all the comments that students has made for a particular professor wtihin a particular college.
+- **Retrieve Comments** : Users can retrieve list of all the comments that students has made for a particular professor wtihin a particular college.
 
-### Installation
+**IMPORTANT** : Please use typescript instead of javascript and download the dev dependencies specified below, otherwise, you may run into errors.
+
+### Setup Instructions
+
+####  Install the main dependency
 ```sh
 npm i rate-my-professor-api-ts
 ```
+
+#### Install the dev dependencies**
+```sh
+npm install --save-dev typescript @types/node
+```
+
+#### Update the scripts for running the functions:
+
+Within `package.json` add the following command within the `"scripts"`:
+```json
+{
+    "scripts" : {
+        "dev" : "npx tsx index.ts"
+    }
+}
+```
+
+### Generate tsconfig.json
+- Run either of the following command on the terminal
+```
+npx tsc --init
+```
+or
+```
+tsc --init
+```
+
+#### File Creation**
+- Within the root of the project, create a new file named `index.ts` and then test out the example code provided below.
+
+An example package.json would be:
+```json
+{
+  "name": "ts-tests",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx tsx index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "rate-my-professor-api-ts": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "typescript": "^5.7.3"
+  }
+}
+```
+
 ### Examples
 **NOTE**: The primary class is `RateMyProfessor` class and can be imported as:
 
@@ -22,7 +80,7 @@ npm i rate-my-professor-api-ts
 import { RateMyProfessor } from "rate-my-professor-api-ts";
 ```
 
-#### Calling on the constructor method
+#### Calling on the constructor method**
 - Highly recommended to call on the constructors and it's corresponding methods within an asynchronous function.
 
 **Constructor 1**:
@@ -31,46 +89,46 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
 // which is the name of the college of interest
 (async function main() {
    const rmp_instance = new RateMyProfessor("City College of New York");
-   
+
    // one asynchronous method helps retrieve information reagrding college
-   
-   
+
    // method takes in a boolean
    // if boolean is set to true, similar matching named college info will be returned
    // if boolean is set to false, only, the specific college will be returned
    //
    let college_info = await rmp_instance.get_college_info(false);
-   let college_info_all = await rmp_instance.get_college_info(true); 
-   
+   let college_info_all = await rmp_instance.get_college_info(true);
+
    // uncomment the lines below to see the response
 //    console.log(college_info);
 //    console.log(college_info_all);
 })();
 ```
 
-****
+********
 
 
 **Additional Methods using constructor 1**
 ```typescript
 (async function main() {
    const rmp_instance = new RateMyProfessor("City College of New York");
-   
+
    // another asynchronous method helps retrieve list of professors
    //
    // for the current university that the constructor has been set to
    //
    let list_of_professors = await rmp_instance.get_professor_list();
    console.log(list_of_professors);
-   
+
    // method that saves result within a json file
    // and also returns the data
    //
    // data is saved to file named professor_list.json
    let list_of_professors_saved = await rmp_instance.get_professor_list_and_save("professor_list.json");
-   
+
 })();
 ```
+********
 
 **Using the setter logic to update values**
 - If you need to modify the current college or professor or if the professor value hasn't been initialized, 3 seperate methods exist for ease of use.
@@ -79,12 +137,12 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
 ```typescript
 (async function main() {
    const rmp_instance = new RateMyProfessor("City College of New York");
-   
+
    // setter method to update college
    // setter method 1
    rmp_instance.set_college("Baruch College");
    console.log(rmp_instance);
-   
+
    // setter method to update professor
    // even if originally professor was null
    // setter method 2
@@ -98,6 +156,7 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
    console.log(rmp_instance);
 })();
 ```
+********
 
 **Constructor 2**
 - Whether using constructor 1 or constructor is a method of preference and depends on your own use cases.
@@ -105,15 +164,14 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
 ```typescript
 (async function main() {
    const rmp_instance = new RateMyProfessor("City College of New York", "Douglas Troeger");
-   
+
    // this method will retrieve all the ratings for the current professor
-   // 
+   //
    // in this case, the ratings for Douglas Troeger
    // from CUNY City College
    //
    const professor_ratings = await rmp_instance.get_comments_by_professor();
-   
-   
+
    // all the get methods have a saving logic built in
    // similar to before, if you not only want the data returned
    //
@@ -128,6 +186,8 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
    console.log(professor_ratings_saved);
 })();
 ```
+
+********
 
 **Method to retrieve information about a particular professor**
 - This method will retrieve information such as their average difficulty, ratings, number of ratings, department and average percentage willing to retake the professor.
@@ -152,6 +212,9 @@ import { RateMyProfessor } from "rate-my-professor-api-ts";
   );
 })();
 ```
+
+********
+
 **Sample Output**
 - Below is an example of what the college info looks like.
 - If boolean value within `get_college_info()` is set to `true`.
