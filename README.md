@@ -7,11 +7,18 @@ A lightweight API wrapper around [**__Rate My Professor__**](____https://www.rat
     - In addition, information such as average rating, average difficulty, and percentage of student likely to retake this particular professor.
 
 - **Retrieve List of Professors** : If an user wants to obtain information about the number of professors currently recorded within Rate My Professor, there's a method that can retrieve the list of all the professors for a particular college.
-    - ****NOTE**** : New professors may not always be recorded within Rate My Professor, esepcially if they happen to be graduate students or their first semester teaching, this information can always be verified on the actual college website.
+    - **NOTE** : New professors may not always be recorded within Rate My Professor, esepcially if they happen to be graduate students or their first semester teaching, this information can always be verified on the actual college website.
 
 - **Retrieve Comments** : Users can retrieve list of all the comments that students has made for a particular professor wtihin a particular college.
 
 **IMPORTANT** : Please use typescript instead of javascript and download the dev dependencies specified below, otherwise, you may run into errors.
+
+### Stable versions
+Below are the list of stable versions:
+- 1.0.2
+- 1.0.3
+- 1.0.4
+- 1.0.5
 
 ### Setup Instructions
 
@@ -20,7 +27,7 @@ A lightweight API wrapper around [**__Rate My Professor__**](____https://www.rat
 npm i rate-my-professor-api-ts
 ```
 
-#### Install the dev dependencies**
+#### Install the dev dependencies
 ```sh
 npm install --save-dev typescript @types/node
 ```
@@ -46,7 +53,7 @@ or
 tsc --init
 ```
 
-#### File Creation**
+#### File Creation
 - Within the root of the project, create a new file named `index.ts` and then test out the example code provided below.
 
 An example package.json would be:
@@ -80,7 +87,7 @@ An example package.json would be:
 import { RateMyProfessor } from "rate-my-professor-api-ts";
 ```
 
-#### Calling on the constructor method**
+#### Calling on the constructor method
 - Highly recommended to call on the constructors and it's corresponding methods within an asynchronous function.
 
 **Constructor 1**:
