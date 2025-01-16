@@ -1,4 +1,4 @@
-# rate-my-professor-api-ts**
+# rate-my-professor-api-ts
 ## Overview
 A lightweight API wrapper around [**__Rate My Professor__**](____https://www.ratemyprofessors.com/____). Complex API calls and graphql queries have been abstracted away and simplified into the list of following features (with examples provided below):
 - ****Retrieve College Summary**** : Get information related to a particular college. Such as the list of departments, loction of the college, condition of the campus, safety and satisfaction level and more.
