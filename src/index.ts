@@ -15,7 +15,7 @@ import {
   SCHOOL_BODY_QUERY,
   TEACHER_LIST,
   HEADERS,
-} from "./features";
+} from "./features.js";
 
 import type {
   TeacherList,
@@ -30,7 +30,7 @@ import type {
   TeacherNode,
 } from "./types";
 
-import * as fs from "fs";
+import { writeFile } from "fs";
 
 export {
   search_school,
@@ -98,7 +98,7 @@ export class RateMyProfessor {
   ): Promise<SchoolSearch> {
     let retrieved_data = await this.get_college_info(retrieve_all);
     if (retrieve_all) {
-      fs.writeFile(file_name, JSON.stringify(retrieved_data), (err) => {
+      writeFile(file_name, JSON.stringify(retrieved_data), (err: NodeJS.ErrnoException | null) => {
         if (err) {
           console.error(`Error with saving data : ${err}`);
         }
@@ -116,7 +116,7 @@ export class RateMyProfessor {
   public async get_professor_list_and_save(file_name: string) {
     const professor_list = await this.get_professor_list();
 
-    fs.writeFile(file_name, JSON.stringify(professor_list), (err) => {
+    writeFile(file_name, JSON.stringify(professor_list), (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error(`Error with saving data : ${err}`);
       }
@@ -154,7 +154,7 @@ export class RateMyProfessor {
 
   public async get_comments_by_professor_and_save(file_name: string) {
     let professor_comments = await this.get_comments_by_professor();
-    fs.writeFile(file_name, JSON.stringify(professor_comments), (err) => {
+    writeFile(file_name, JSON.stringify(professor_comments), (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error("There was an error saving the data", err);
       } else {
@@ -177,7 +177,7 @@ export class RateMyProfessor {
 
   public async get_professor_info_and_save(file_name: string) {
     const professor_info = await this.get_professor_info();
-    fs.writeFile(file_name, JSON.stringify(professor_info), (err) => {
+    writeFile(file_name, JSON.stringify(professor_info), (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error("There was an error saving the data", err);
       } else {
